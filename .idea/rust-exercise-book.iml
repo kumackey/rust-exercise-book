@@ -4,6 +4,7 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/hello/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/hello/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/echor/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/echor/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/copilot/chatSessions" />
