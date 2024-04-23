@@ -9,10 +9,13 @@
       <sourceFolder url="file://$MODULE_DIR$/echor/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/catr/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/catr/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/headr/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/headr/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/copilot/chatSessions" />
       <excludeFolder url="file://$MODULE_DIR$/hello/target" />
       <excludeFolder url="file://$MODULE_DIR$/echor/target" />
       <excludeFolder url="file://$MODULE_DIR$/catr/target" />
+      <excludeFolder url="file://$MODULE_DIR$/headr/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
