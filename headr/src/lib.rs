@@ -63,16 +63,25 @@ pub fn get_args() -> MyResult<Config> {
 }
 
 pub fn run(config: Config) -> MyResult<()> {
-    for filename in config.files {
+    let num_files = config.files.len();
+
+    for (file_num, filename) in config.files.iter().enumerate() {
         match open(&filename) {
             Err(err) => eprintln!("{}: {}", filename, err),
             Ok(mut file) => {
+                if num_files > 1 {
+                    println!(
+                        "{}==> {} <==",
+                        if file_num > 0 { "\n" } else { "" },
+                        filename
+                    );
+                }
                 if let Some(num_bytes) = config.bytes {
                     let bytes = file.bytes().take(num_bytes).collect::<Result<Vec<_>, _>>();
                     print!("{}", String::from_utf8_lossy(&bytes?));
                 } else {
+                    let mut line = String::new();
                     for _ in 0..config.lines {
-                        let mut line = String::new();
                         if file.read_line(&mut line)? == 0 {
                             break;
                         }
