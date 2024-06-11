@@ -79,42 +79,61 @@ pub fn get_args() -> MyResult<Config> {
 
     Ok(Config {
         files: matches.values_of_lossy("files").unwrap(),
-        lines: matches.is_present("lines"),
-        words: matches.is_present("words"),
-        bytes: matches.is_present("bytes"),
-        chars: matches.is_present("chars"),
+        lines,
+        words,
+        bytes,
+        chars,
     })
 }
 
 pub fn run(config: Config) -> MyResult<()> {
+    let mut sum_lines = 0;
+    let mut sum_words = 0;
+    let mut sum_bytes = 0;
+    let mut sum_chars = 0;
+
     for filename in &config.files {
         match open(filename) {
             Err(err) => eprintln!("{}: {}", filename, err),
             Ok(_) => {
-                // 出力する
                 let info = count(open(filename)?);
                 match info {
                     Err(err) => eprintln!("{}: {}", filename, err),
                     Ok(info) => {
-                        if config.lines {
-                            println!("{} lines", info.num_lines);
-                        }
-                        if config.words {
-                            println!("{} words", info.num_words);
-                        }
-                        if config.bytes {
-                            println!("{} bytes", info.num_bytes);
-                        }
-                        if config.chars {
-                            println!("{} chars", info.num_chars);
-                        }
+                        sum_lines += info.num_lines;
+                        sum_words += info.num_words;
+                        sum_bytes += info.num_bytes;
+                        sum_chars += info.num_chars;
+
+                        println!("{}{}{}{} {}",
+                                 format_field(info.num_lines, config.lines),
+                                 format_field(info.num_words, config.words),
+                                 format_field(info.num_bytes, config.bytes),
+                                 format_field(info.num_chars, config.chars),
+                                 filename);
                     }
                 }
             }
         }
     }
 
+    if config.files.len() > 1 {
+        println!("{}{}{}{} total",
+                 format_field(sum_lines, config.lines),
+                 format_field(sum_words, config.words),
+                 format_field(sum_bytes, config.bytes),
+                 format_field(sum_chars, config.chars));
+    }
+
     Ok(())
+}
+
+fn format_field(val: usize, show: bool) -> String {
+    if show {
+        format!("{:>8}", val)
+    } else {
+        "".to_string()
+    }
 }
 
 fn open(filename: &str) -> MyResult<Box<dyn BufRead>> {
