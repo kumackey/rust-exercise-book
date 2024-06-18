@@ -191,4 +191,10 @@ mod tests {
             },
         );
     }
+
+    fn test_format_field() {
+        assert_eq!(super::format_field(1, false), "");
+        assert_eq!(super::format_field(3, true), "     3");
+        assert_eq!(super::format_field(10, true), "     10");
+    }
 }
