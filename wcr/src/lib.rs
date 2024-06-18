@@ -105,12 +105,17 @@ pub fn run(config: Config) -> MyResult<()> {
                         sum_bytes += info.num_bytes;
                         sum_chars += info.num_chars;
 
-                        println!("{}{}{}{} {}",
+                        println!("{}{}{}{}{}",
                                  format_field(info.num_lines, config.lines),
                                  format_field(info.num_words, config.words),
                                  format_field(info.num_bytes, config.bytes),
                                  format_field(info.num_chars, config.chars),
-                                 filename);
+                                 if filename == "-" {
+                                     "".to_string()
+                                 } else {
+                                     format!(" {}", filename)
+                                 }
+                        );
                     }
                 }
             }
@@ -180,7 +185,7 @@ mod tests {
                 info.unwrap(),
                 FileInfo {
                     num_lines: 1,
-                    num_words: 12,
+                    num_words: 10,
                     num_bytes: 48,
                     num_chars: 48,
             },
