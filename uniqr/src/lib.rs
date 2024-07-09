@@ -49,15 +49,43 @@ pub fn get_args() -> MyResult<Config> {
 
 pub fn run(config: Config) -> MyResult<()> {
     let mut file = open(&config.in_file).map_err(|e| format!("{}: {}", config.in_file, e))?;
+
+    let mut previous_line = String::new();
     let mut line = String::new();
+    let mut count = 0;
+
     loop {
         let bytes = file.read_line(&mut line)?;
         if bytes == 0 {
             break;
         }
 
-        print!("{}", line);
-        line.clear();
+        if line.trim_end() == previous_line.trim_end() {
+            // 重複していた場合、カウントだけ増やして次の行へ
+            count += 1;
+            line.clear();
+            continue;
+        } else {
+            // 重複してなかった場合、countがあれば前の行を表示
+            if config.count {
+                if count > 0 {
+                    println!("{:4} {}", count, previous_line);
+                }
+                count = 0;
+            } else {
+                println!("{}", previous_line);
+            }
+
+            previous_line = line.clone();
+            line.clear();
+        }
+    }
+
+    // 最後の行を表示
+    if config.count {
+        if count > 0 {
+            println!("{:4} {}", count, previous_line);
+        }
     }
 
     Ok(())
