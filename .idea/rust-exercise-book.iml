@@ -13,12 +13,15 @@
       <sourceFolder url="file://$MODULE_DIR$/headr/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/wcr/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/wcr/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/uniqr/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/uniqr/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/.idea/copilot/chatSessions" />
       <excludeFolder url="file://$MODULE_DIR$/hello/target" />
       <excludeFolder url="file://$MODULE_DIR$/echor/target" />
       <excludeFolder url="file://$MODULE_DIR$/catr/target" />
       <excludeFolder url="file://$MODULE_DIR$/headr/target" />
       <excludeFolder url="file://$MODULE_DIR$/wcr/target" />
+      <excludeFolder url="file://$MODULE_DIR$/uniqr/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
