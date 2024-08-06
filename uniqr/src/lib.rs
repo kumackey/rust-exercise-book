@@ -80,6 +80,7 @@ pub fn run(config: Config) -> MyResult<()> {
             // 重複してなかった場合、countがあれば前の行を表示
             print(count, &previous_line)?;
             previous_line = line.clone();
+            count = 0;
         }
 
         count += 1;
