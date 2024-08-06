@@ -2,7 +2,7 @@ use clap::{App, Arg};
 use std::{
     error::Error,
     fs::File,
-    io::{self, BufRead, BufReader},
+    io::{self, BufRead, BufReader, Write},
 };
 
 type MyResult<T> = Result<T, Box<dyn Error>>;
@@ -50,18 +50,24 @@ pub fn get_args() -> MyResult<Config> {
 pub fn run(config: Config) -> MyResult<()> {
     let mut file = open(&config.in_file).map_err(|e| format!("{}: {}", config.in_file, e))?;
 
+    let mut out_file: Box<dyn Write> = match &config.out_file {
+        Some(out_name) => Box::new(File::create(out_name)?),
+        _ => Box::new(io::stdout()),
+    };
+
     let mut previous_line = String::new();
     let mut line = String::new();
     let mut count = 0;
 
-    let print = |count:u64, text:&str| {
+    let mut print = |count:u64, text:&str| -> MyResult<()> {
         if count > 0 {
             if config.count {
-                println!("{:4} {}", count, text);
+                write!(out_file, "{:4} {}", count, text)?;
             } else {
-                println!("{}", text);
+                write!(out_file, "{}", text)?;
             }
-        }
+        };
+        Ok(())
     };
 
     loop {
@@ -72,7 +78,7 @@ pub fn run(config: Config) -> MyResult<()> {
 
         if line.trim_end() != previous_line.trim_end() {
             // 重複してなかった場合、countがあれば前の行を表示
-            print(count, &previous_line);
+            print(count, &previous_line)?;
             previous_line = line.clone();
         }
 
@@ -80,7 +86,7 @@ pub fn run(config: Config) -> MyResult<()> {
         line.clear();
     }
 
-    print(count, &previous_line);
+    print(count, &previous_line)?;
 
     Ok(())
 }
