@@ -54,39 +54,33 @@ pub fn run(config: Config) -> MyResult<()> {
     let mut line = String::new();
     let mut count = 0;
 
+    let print = |count:u64, text:&str| {
+        if count > 0 {
+            if config.count {
+                println!("{:4} {}", count, text);
+            } else {
+                println!("{}", text);
+            }
+        }
+    };
+
     loop {
         let bytes = file.read_line(&mut line)?;
         if bytes == 0 {
             break;
         }
 
-        if line.trim_end() == previous_line.trim_end() {
-            // 重複していた場合、カウントだけ増やして次の行へ
-            count += 1;
-            line.clear();
-            continue;
-        } else {
+        if line.trim_end() != previous_line.trim_end() {
             // 重複してなかった場合、countがあれば前の行を表示
-            if config.count {
-                if count > 0 {
-                    println!("{:4} {}", count, previous_line);
-                }
-                count = 0;
-            } else {
-                println!("{}", previous_line);
-            }
-
+            print(count, &previous_line);
             previous_line = line.clone();
-            line.clear();
         }
+
+        count += 1;
+        line.clear();
     }
 
-    // 最後の行を表示
-    if config.count {
-        if count > 0 {
-            println!("{:4} {}", count, previous_line);
-        }
-    }
+    print(count, &previous_line);
 
     Ok(())
 }
